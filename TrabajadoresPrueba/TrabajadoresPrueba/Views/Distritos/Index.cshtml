@@ -1,0 +1,74 @@
+﻿@model IEnumerable<TrabajadoresPrueba.Modelos.Distrito>
+@{
+    var parametroProvincia = (TrabajadoresPrueba.Modelos.Provincia)ViewBag.Provincia;
+}
+
+<div class="mail-box">
+    <h3>Provincia: @parametroProvincia.NombreProvincia</h3>
+    <h2>Distritos</h2>
+    <p>
+        <a asp-action="Create" asp-route-idProvincia="@parametroProvincia.Id" class="btn btn-primary info-dialog-window">Nuevo Registro</a>
+    </p>
+    <div class="table-responsive table-sm table-hover">
+
+        <table id="example" class="table table-hover table-mail">
+            <thead class="table-active">
+                <tr>
+                    <th>
+                        Nombre de Distritos
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NombreDistrito)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning infoObser-dialog-window">Editar</a>
+                            <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
+                            @*<a asp-controller="Distritos" asp-action="Index" asp-route-id="@item.Id" class="btn btn-info">Distritos</a> ya no va*@ 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-controller="Provincias" asp-route-id="@parametroProvincia.IdDepartamento" class="btn btn-dark" asp-action="Index">Regresar a la lista</a>
+    </div>
+</div>
+
+<div class="modal fade" id="Anular" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#da2213;color:white;">
+                <button data-dismiss="modal" class="close" type="button">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h2 class="modal-title">Eliminar Distrito</h2>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <h4>¿Estas seguro de eliminar el registro seleccionado?</h4>
+                </div>
+                <div id="response" class="text-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $("body").on("click", "a.delete-dialog-window", null, function (e) {
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="idProvincia" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Distritos")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            $("#response").html(htmlContent);
+            $('#Anular').modal('show');
+        });
+                                //Cuadro para poder eliminar registro, con boton no y si //"modal"//
+    </script>
+}
