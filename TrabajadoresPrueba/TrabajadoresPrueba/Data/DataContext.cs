@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using TrabajadoresPrueba.Modelos;
+using TrabajadoresPrueba.Models;
 
 namespace TrabajadoresPrueba.Data
 {
@@ -13,7 +14,7 @@ namespace TrabajadoresPrueba.Data
         public DbSet<Departamento> Departamento { get; set; }
         public DbSet<Provincia> Provincia { get; set; }
         public DbSet<Distrito> Distrito { get; set; }
-
+        public DbSet<Trabajadores> Trabajadores { get; set; }
 
     }
 }

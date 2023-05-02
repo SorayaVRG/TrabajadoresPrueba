@@ -1,0 +1,139 @@
+﻿@model IEnumerable<TrabajadoresPrueba.Modelos.Trabajadores>
+
+<div class="mail-box">
+    <h2>Departamentos</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Nuevo Registro</a>
+    </p>
+    <div class="table-responsive table-sm table-hover">
+
+        <table id="example" class="table table-hover table-mail">
+            <thead class="table-active">
+                <tr>
+                    <th>
+                        Tip. Documento
+                    </th>
+                    <th>
+                        Num. Documento
+                    </th>
+                    <th>
+                        Nombres
+                    </th>
+                    <th>
+                        Sexo
+                    </th>
+                    <th>
+                        Departamento
+                    </th>
+                    <th>
+                        Provincia
+                    </th>
+                    <th>
+                        Distrito
+                    </th>
+                    <th>
+                        Ficha
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoDocumento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumeroDocumento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sexo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdDepartamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProvincia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdDistrito)
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Ficha))
+                            {
+                                <a href="@item.FichaURL2" target="_blank">Ficha</a>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning infoObser-dialog-window">Editar</a>
+                            <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="Anular" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#da2213;color:white;">
+                <button data-dismiss="modal" class="close" type="button">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h2 class="modal-title">Eliminar Trabajadores</h2>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <h4>¿Estas seguro de eliminar el registro seleccionado?</h4>
+                </div>
+                <div id="response" class="text-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        //Para eliminar la fila//
+        $("body").on("click", "a.delete-dialog-window", null, function (e) {
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="idZonas" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Trabajadores")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            $("#response").html(htmlContent);
+            $('#Anular').modal('show');
+        });
+        //Cuadro para poder eliminar registro, con boton no y si //"modal"//
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                language: {
+                    search: "Buscar: ",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ elementos",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "<",
+                        next: ">",
+                        last: "Último"
+                    }
+                },
+                "order": [[0, "asc"]],
+                stateSave: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        });
+        </script>
+}

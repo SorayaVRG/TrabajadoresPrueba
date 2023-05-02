@@ -6,6 +6,7 @@ namespace TrabajadoresPrueba.Controllers
 {
     public class DepartamentosController : Controller
     {
+        //Conexion a la base de datos
         private readonly DataContext _context;
 
         public DepartamentosController(DataContext dataContext)
@@ -14,6 +15,7 @@ namespace TrabajadoresPrueba.Controllers
         }
 
         //GET : /<Controller>/
+        [HttpGet]
         public IActionResult Index()
         {
             var departamentos = _context.Departamento.ToList();
