@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting.Internal;
 using TrabajadoresPrueba.Data;
 using TrabajadoresPrueba.Modelos;
 using TrabajadoresPrueba.Models;
+using static System.Net.Mime.MediaTypeNames;
 // va haber comandos para realizar los combos
 
 namespace TrabajadoresPrueba.Controllers
@@ -63,15 +64,24 @@ namespace TrabajadoresPrueba.Controllers
             return Json(listado);
         }
 
-        //Para crear la ficha
+        //CREAR NUEVO REGISTRO
         [HttpPost]
         public async Task<IActionResult> Create(Trabajadores model)
         {
+            //PARA CREAR FICHA
             var prueba = model.FichaIFormFile;
 
             if(model.FichaIFormFile!=null)
             {
                 model.Ficha = await CargarDocumento(model.FichaIFormFile, "Ficha");
+            }
+
+            //PARA CREAR FOTO
+            var prueba1 = model.FotoIFormFile;
+
+            if (model.FotoIFormFile != null)
+            {
+                model.Foto = await CargarDocumento0(model.FotoIFormFile, "Foto");
             }
 
             _context.Add(model);
@@ -80,7 +90,7 @@ namespace TrabajadoresPrueba.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+        //PARA CARGAR FICHA
         private async Task<string> CargarDocumento(IFormFile FichaIFormFile, string ruta)
         {
             var guid = Guid.NewGuid().ToString();
@@ -94,7 +104,21 @@ namespace TrabajadoresPrueba.Controllers
             }
             return string.Format("/images/{0}/{1}", ruta, fileName);
         }
-        
+
+        //PARA CREAR FOTO
+        private async Task<string> CargarDocumento0(IFormFile FotoIFormFile, string ruta)
+        {
+            var guid = Guid.NewGuid().ToString();
+            var fileName = guid + Path.GetExtension(FotoIFormFile.FileName);
+            //Obtengo extension del documento
+            var carga1 = Path.Combine(_webHostEnvironment.WebRootPath, "images", ruta);
+            /*var carga = Path.Combine(_webHostEnvironment.WebRootPath, string.Format("images\\{0}", ruta));*/
+            using (var fileStream = new FileStream(Path.Combine(carga1, fileName), FileMode.Create))
+            {
+                await FotoIFormFile.CopyToAsync(fileStream);
+            }
+            return string.Format("/images/{0}/{1}", ruta, fileName);
+        }
 
         //Edit
         public async Task<IActionResult> Edit(int id)
@@ -134,6 +158,40 @@ namespace TrabajadoresPrueba.Controllers
             modelOld.IdDepartamento = model.IdDepartamento; // Actualizar el campo IdDepartamento
             modelOld.IdProvincia = model.IdProvincia; // Actualizar el campo IdProvincia
             modelOld.IdDistrito = model.IdDistrito; // Actualizar el campo IdDistrito
+
+            // Actualizar ficha si se proporciona un nuevo archivo
+            if (model.FichaIFormFile != null)
+            {
+                // Eliminar la ficha anterior si existe
+                if (!string.IsNullOrEmpty(modelOld.Ficha))
+                {
+                    var fichaPath = Path.Combine(_webHostEnvironment.WebRootPath, modelOld.Ficha.TrimStart('/'));
+                    if (System.IO.File.Exists(fichaPath))
+                    {
+                        System.IO.File.Delete(fichaPath);
+                    }
+                }
+
+                // Cargar la nueva ficha
+                modelOld.Ficha = await CargarDocumento(model.FichaIFormFile, "Ficha");
+            }
+
+            // Actualizar foto si se proporciona un nuevo archivo
+            if (model.FotoIFormFile != null)
+            {
+                // Eliminar la foto anterior si existe
+                if (!string.IsNullOrEmpty(modelOld.Foto))
+                {
+                    var fotoPath = Path.Combine(_webHostEnvironment.WebRootPath, modelOld.Foto.TrimStart('/'));
+                    if (System.IO.File.Exists(fotoPath))
+                    {
+                        System.IO.File.Delete(fotoPath);
+                    }
+                }
+
+                // Cargar la nueva foto
+                modelOld.Foto = await CargarDocumento(model.FotoIFormFile, "Foto");
+            }
 
             _context.Update(modelOld);
             await _context.SaveChangesAsync();

@@ -32,12 +32,6 @@ namespace TrabajadoresPrueba.Modelos
         public string? Ficha { get; set; }
         [NotMapped]
         public IFormFile FichaIFormFile { get; set; }
-
-        [DisplayName("Foto")]
-        public string? Foto { get; set; }
-        [NotMapped]
-        public IFormFile FotoIFormFile { get; set;}
-
         public string FichaURL => Ficha == null ? "" : Ficha;
 
         public string FichaURL2
@@ -54,6 +48,28 @@ namespace TrabajadoresPrueba.Modelos
                 }
             }
         }
+
+        [DisplayName("Foto")]
+        public string? Foto { get; set; }
+        [NotMapped]
+        public IFormFile FotoIFormFile { get; set;}
+        public string FotoURL => Foto == null ? "" : Foto;
+
+        public string FotoURL2
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Foto))
+                {
+                    return "";
+                }
+                else
+                {
+                    return $"https://localhost:7182/{Foto}";
+                }
+            }
+        }
+
 
     }
 }

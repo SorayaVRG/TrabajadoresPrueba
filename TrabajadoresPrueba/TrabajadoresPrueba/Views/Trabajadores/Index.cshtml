@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<TrabajadoresPrueba.Modelos.Trabajadores>
 
 <div class="mail-box">
-    <h2>Departamentos</h2>
+    <h2>Trabajadores</h2>
     <p>
         <a asp-action="Create" class="btn btn-primary">Nuevo Registro</a>
     </p>
@@ -34,7 +34,12 @@
                     <th>
                         Ficha
                     </th>
-                    <th></th>
+                    <th>
+                        Foto
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -68,6 +73,13 @@
                                 <a href="@item.FichaURL2" target="_blank">Ficha</a>
                             }
                         </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Foto))
+                            {
+                                <img src="@item.Foto" class="img-listado" alt="Foto del trabajador" />
+                            }
+                        </td>
+
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning infoObser-dialog-window">Editar</a>
                             <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
