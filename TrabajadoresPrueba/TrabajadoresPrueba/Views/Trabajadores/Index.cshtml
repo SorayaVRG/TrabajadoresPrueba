@@ -1,9 +1,9 @@
-﻿@model IEnumerable<TrabajadoresPrueba.Modelos.Trabajadores>
+﻿@model IEnumerable<TrabajadoresPrueba.Modelos.PR_TRABAJADORES_Q01>
 
 <div class="mail-box">
     <h2>Trabajadores</h2>
     <p>
-        <a asp-action="Create" class="btn btn-primary">Nuevo Registro</a>
+        <a asp-action="Create" class="btn btn-primary add-dialog-window">Nuevo Registro</a>
     </p>
     <div class="table-responsive table-sm table-hover">
 
@@ -11,10 +11,10 @@
             <thead class="table-active">
                 <tr>
                     <th>
-                        Tip. Documento
+                        Tip. Doc
                     </th>
                     <th>
-                        Num. Documento
+                        Num. Docu
                     </th>
                     <th>
                         Nombres
@@ -56,16 +56,16 @@
                             @Html.DisplayFor(modelItem => item.Nombres)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Sexo)
+                            @Html.DisplayFor(modelItem => item.SexoDescripcion)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IdDepartamento)
+                            @Html.DisplayFor(modelItem => item.NombreDepartamento)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IdProvincia)
+                            @Html.DisplayFor(modelItem => item.NombreProvincia)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IdDistrito)
+                            @Html.DisplayFor(modelItem => item.NombreDistrito)
                         </td>
                         <td>
                             @if (!string.IsNullOrEmpty(item.Ficha))
@@ -81,13 +81,45 @@
                         </td>
 
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning infoObser-dialog-window">Editar</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning edit-dialog-window">Editar</a>
                             <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AddModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:green;color:white;">
+                <h5 class="modal-title" id="TittleCreatemodel">Crear Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teeee">Please wait...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="EditModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:orange;color:white;">
+                <h5 class="modal-title" id="TittleCreatemodel">Actualizar Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teeee">Please wait...</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -115,13 +147,41 @@
 @section Scripts {
 
     <script>
-        //Para eliminar la fila//
+        //PARA ABRIR UNA VENTANA CREATE
+        $("body").on("click", "a.add-dialog-window", null, function (e) {
+            e.preventDefault();
+            var $link = $(this);
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0) {
+                $('#AddModal').modal('show');
+            }
+            else {
+                $.get(url, function (data) {
+                    $('#AddModal .teeee').html(data);
+                    $('#AddModal').modal('show');
+                });
+            }
+        });
+        </script>
+
+    <script>
+        //Para eliminar la fila Ventana DELETE//
         $("body").on("click", "a.delete-dialog-window", null, function (e) {
             var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="idZonas" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Trabajadores")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
             $("#response").html(htmlContent);
             $('#Anular').modal('show');
         });
         //Cuadro para poder eliminar registro, con boton no y si //"modal"//
+    </script>
+
+    <script>
+        //PARA ABRIR UNA VENTANA DELETE
+        $("body").on("click", "a.delete-dialog-window", null, function (e) {
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Departamentos")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            $("#response").html(htmlContent);
+            $('#Anular').modal('show');
+        });
+        //Cuadro para poder eliminar registro, con boton no y si
     </script>
 
     <script>
@@ -147,5 +207,27 @@
                 ]
             });
         });
-        </script>
+    </script>
+    
+    <script>
+        //PARA HACER EL COMBO ANIDADO
+        function onchangeDepartamento() {
+            let idDepartamento = $("#comboDepartamento").val();
+            CargarProvincia(idDepartamento);
+        }
+        function CargarProvincia(idDepartamento) {
+            fetchGet("/Trabajadores/CargarProvincias/?id=" + idDepartamento, function (data) {
+                llenarCombo(data, "comboProvincia", "nombreProvincia", "id", "0");
+            });
+        }
+        function onchangeProvincia() {
+            let idProvincia = $("#comboProvincia").val();
+            CargarDistritos(idProvincia);
+        }
+        function CargarDistritos(idProvincia) {
+            fetchGet("/Trabajadores/CargarDistritos/?id=" + idProvincia, function (data) {
+                llenarCombo(data, "comboDistrito", "nombreDistrito", "id", "0");
+            });
+        }
+    </script>
 }

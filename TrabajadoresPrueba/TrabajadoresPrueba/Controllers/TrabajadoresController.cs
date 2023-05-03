@@ -25,8 +25,11 @@ namespace TrabajadoresPrueba.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var listado = _context.Trabajadores.ToList();
-            return View(listado);
+            /*var listado = _context.Trabajadores.ToList();
+            return View(listado);*/
+
+            var listado2 = _context.PR_TRABAJADORES_Q01.FromSqlRaw("exec PR_TRABAJADORES_Q01");
+            return View(listado2);
         }
 
         [HttpGet]
@@ -47,7 +50,7 @@ namespace TrabajadoresPrueba.Controllers
              ViewBag de Departamento
              ViewBag de Tipos de documento
             */
-            return View();
+            return PartialView();
         }
 
         [HttpGet]
@@ -71,7 +74,7 @@ namespace TrabajadoresPrueba.Controllers
             //PARA CREAR FICHA
             var prueba = model.FichaIFormFile;
 
-            if(model.FichaIFormFile!=null)
+            if (model.FichaIFormFile != null)
             {
                 model.Ficha = await CargarDocumento(model.FichaIFormFile, "Ficha");
             }
@@ -96,9 +99,9 @@ namespace TrabajadoresPrueba.Controllers
             var guid = Guid.NewGuid().ToString();
             var fileName = guid + Path.GetExtension(FichaIFormFile.FileName);
             //Obtengo extension del documento
-            var carga1 = Path.Combine(_webHostEnvironment.WebRootPath, "images", ruta);
+            var carga1 = Path.Combine(_webHostEnvironment.WebRootPath, "images", ruta);
             /*var carga = Path.Combine(_webHostEnvironment.WebRootPath, string.Format("images\\{0}", ruta));*/
-            using (var fileStream = new FileStream(Path.Combine(carga1,fileName),FileMode.Create))
+            using (var fileStream = new FileStream(Path.Combine(carga1, fileName), FileMode.Create))
             {
                 await FichaIFormFile.CopyToAsync(fileStream);
             }
@@ -111,7 +114,7 @@ namespace TrabajadoresPrueba.Controllers
             var guid = Guid.NewGuid().ToString();
             var fileName = guid + Path.GetExtension(FotoIFormFile.FileName);
             //Obtengo extension del documento
-            var carga1 = Path.Combine(_webHostEnvironment.WebRootPath, "images", ruta);
+            var carga1 = Path.Combine(_webHostEnvironment.WebRootPath, "images", ruta);
             /*var carga = Path.Combine(_webHostEnvironment.WebRootPath, string.Format("images\\{0}", ruta));*/
             using (var fileStream = new FileStream(Path.Combine(carga1, fileName), FileMode.Create))
             {
@@ -133,7 +136,7 @@ namespace TrabajadoresPrueba.Controllers
 
             var Departamentos = await _context.Departamento.ToListAsync();
             ViewBag.IdDepartamento = new SelectList(Departamentos, "Id", "NombreDepartamento", model.IdDepartamento);
-            var Provincias = await _context.Provincia.Where(t=>t.IdDepartamento.Equals(model.IdDepartamento)).ToListAsync();
+            var Provincias = await _context.Provincia.Where(t => t.IdDepartamento.Equals(model.IdDepartamento)).ToListAsync();
             ViewBag.IdProvincia = new SelectList(Provincias, "Id", "NombreProvincia", model.IdProvincia);
             var Distritos = await _context.Distrito.Where(t => t.IdProvincia.Equals(model.IdDistrito)).ToListAsync();
             ViewBag.IdDistrito = new SelectList(Distritos, "Id", "NombreDistrito", model.IdDistrito);
@@ -209,4 +212,3 @@ namespace TrabajadoresPrueba.Controllers
         }
     }
 }
-

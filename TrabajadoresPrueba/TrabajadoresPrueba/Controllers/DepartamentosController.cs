@@ -24,7 +24,7 @@ namespace TrabajadoresPrueba.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -38,7 +38,7 @@ namespace TrabajadoresPrueba.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var departamento = await _context.Departamento.FindAsync(id); //select * from Departamento where PK = id
-            return View(departamento);
+            return PartialView(departamento);
         }
 
         [HttpPost]

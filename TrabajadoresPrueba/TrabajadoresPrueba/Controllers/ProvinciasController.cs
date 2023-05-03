@@ -14,15 +14,16 @@ namespace TrabajadoresPrueba.Controllers
         {
             _context = dataContext;
         }
-
-        public async Task<IActionResult> Index(int id)
+        //Referencia para distritos
+        public async Task<IActionResult> Index(int idDepartamento)
         {
-            var provincias = await _context.Provincia.Where(t => t.IdDepartamento.Equals(id)).ToListAsync();
-            var modelDepartamento = await _context.Departamento.FindAsync(id);
+            var provincias = await _context.Provincia.Where(t => t.IdDepartamento.Equals(idDepartamento)).ToListAsync();
+            var modelDepartamento = await _context.Departamento.FindAsync(idDepartamento);
             ViewBag.Departamento = modelDepartamento;
             return View(provincias);
         }
-        
+
+
         //create
         public IActionResult Create(int idDepartamento)
         {

@@ -71,9 +71,10 @@
                 <div class="form-group">
                     <div class="input text">
                         <label asp-for="FichaIFormFile" class="control-label">Ficha</label>
-                        <input asp-for="FichaIFormFile" class="form-control" />
+                        <input asp-for="FichaIFormFile" class="form-control" accept="application/pdf" />
                         <span asp-validation-for="FichaIFormFile" class="text-danger"></span>
                     </div>
+
                 </div>
             </div>
             <div class="col col-sm-12">
@@ -93,27 +94,3 @@
         </form>
     </div>
 </div>
-
-@section Scripts {
-<script>
-    function onchangeDepartamento() {
-        let idDepartamento = $("#comboDepartamento").val();
-        CargarProvincia(idDepartamento);
-    }
-    function CargarProvincia(idDepartamento) {
-            fetchGet("/Trabajadores/CargarProvincias/?id=" + idDepartamento, function (data) {
-            llenarCombo(data, "comboProvincia", "nombreProvincia", "id", "0");
-        });
-    }
-    function onchangeProvincia() {
-        let idProvincia = $("#comboProvincia").val();
-        CargarDistritos(idProvincia);
-    }
-    function CargarDistritos(idProvincia) {
-            fetchGet("/Trabajadores/CargarDistritos/?id=" + idProvincia, function (data) {
-            llenarCombo(data, "comboDistrito", "nombreDistrito", "id", "0");
-        });
-    }
-</script>
-
-}
