@@ -70,8 +70,8 @@
             <div class="col col-sm-12">
                 <div class="form-group">
                     <div class="input text">
-                        <label asp-for="FichaIFormFile" class="control-label"></label>
-                        <input asp-for="FichaIFormFile" type="file">
+                        <label asp-for="FichaIFormFile" class="control-label">Ficha</label>
+                        <input asp-for="FichaIFormFile" class="form-control" />
                         <span asp-validation-for="FichaIFormFile" class="text-danger"></span>
                     </div>
                 </div>
@@ -79,8 +79,8 @@
             <div class="col col-sm-12">
                 <div class="form-group">
                     <div class="input text">
-                        <label asp-for="FotoIFormFile" class="control-label"></label>
-                        <input asp-for="FotoIFormFile" type="file" accept="image/png, image/jpeg">
+                        <label asp-for="FotoIFormFile" class="control-label">Foto</label>
+                        <input asp-for="FotoIFormFile" class="form-control" type="file" accept="image/png, image/jpeg">
                         <span asp-validation-for="FotoIFormFile" class="text-danger"></span>
                     </div>
                 </div>
