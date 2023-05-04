@@ -26,7 +26,7 @@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning edit-dialog-window">Editar</a>
                             <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
-                            <a asp-controller="Provincias" asp-action="Index" asp-route-idDepartamento="@item.Id" class="btn btn-info">Provincias</a>
+                            <a asp-controller="Provincias" asp-action="Index" asp-route-id="@item.Id" class="btn btn-info">Provincias</a>
                         </td>
                     </tr>
                 }
@@ -76,7 +76,7 @@
                     <span aria-hidden="true">×</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h2 class="modal-title">Eliminar Departamento</h2> 
+                <h2 class="modal-title">Eliminar Departamento</h2>
             </div>
             <div class="modal-body">
                 <div class="text-center">
@@ -107,7 +107,7 @@
                 });
             }
         });
-        </script>
+    </script>
 
     <script>
         //PARA ABRIR UNA VENTANA EDIT
@@ -135,6 +135,32 @@
             $("#response").html(htmlContent);
             $('#Anular').modal('show');
         });
-        //Cuadro para poder eliminar registro, con boton no y si
+                //Cuadro para poder eliminar registro, con boton no y si
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            //ESTE ES PARA EL DATATABLES
+            $('#example').DataTable({
+                language: {
+                    search: "Buscar: ",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ elementos",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "<",
+                        next: ">",
+                        last: "Último"
+                    }
+                },
+                "order": [[0, "asc"]],
+                stateSave: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        });
     </script>
     }

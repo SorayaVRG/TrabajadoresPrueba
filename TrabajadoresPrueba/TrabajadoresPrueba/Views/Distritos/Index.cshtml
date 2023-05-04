@@ -36,7 +36,7 @@
                 }
             </tbody>
         </table>
-        <a asp-controller="Provincias" asp-action="Index" asp-route-idDepartamento="@parametroProvincia.IdDepartamento" class="btn btn-dark">Regresar a la lista</a>
+        <a asp-controller="Provincias" asp-route-id="@parametroProvincia.IdDepartamento" class="btn btn-dark" asp-action="Index">Regresar a la lista</a>
 
         @*<a asp-controller="Provincias" asp-route-id="@parametroProvincia.IdDepartamento" class="btn btn-dark" asp-action="Index">Regresar a la lista</a>*@
     </div>
@@ -142,6 +142,32 @@
             $("#response").html(htmlContent);
             $('#Anular').modal('show');
         });
-                                        //Cuadro para poder eliminar registro, con boton no y si //"modal"//
+                                                //Cuadro para poder eliminar registro, con boton no y si //"modal"//
     </script>
-}
+
+    <script>
+        $(document).ready(function () {
+            //ESTE ES PARA EL DATATABLES
+            $('#example').DataTable({
+                language: {
+                    search: "Buscar: ",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ elementos",
+                    infoFiltered: "(filtrado de _MAX_ registros en total)",
+                    paginate: {
+                        first: "Primero",
+                        previous: "<",
+                        next: ">",
+                        last: "Último"
+                    }
+                },
+                "order": [[0, "asc"]],
+                stateSave: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        });
+    </script>
+    }

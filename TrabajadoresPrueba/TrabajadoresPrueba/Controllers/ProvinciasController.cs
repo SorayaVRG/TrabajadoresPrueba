@@ -15,10 +15,10 @@ namespace TrabajadoresPrueba.Controllers
             _context = dataContext;
         }
         //Referencia para distritos
-        public async Task<IActionResult> Index(int idDepartamento)
+        public async Task<IActionResult> Index(int id)
         {
-            var provincias = await _context.Provincia.Where(t => t.IdDepartamento.Equals(idDepartamento)).ToListAsync();
-            var modelDepartamento = await _context.Departamento.FindAsync(idDepartamento);
+            var provincias = await _context.Provincia.Where(t => t.IdDepartamento.Equals(id)).ToListAsync();
+            var modelDepartamento = await _context.Departamento.FindAsync(id);
             ViewBag.Departamento = modelDepartamento;
             return View(provincias);
         }
@@ -31,30 +31,29 @@ namespace TrabajadoresPrueba.Controllers
             return PartialView(provincia);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Create(Provincia model)
         {
             await _context.AddAsync(model);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
             return RedirectToAction("Index", new { id = model.IdDepartamento });
-
         }
 
         // edit
         public async Task<IActionResult> Edit(int id)
         {
-            var provincia = await _context.Provincia.FindAsync(id); //select * from Departamento where PK = id
+            var provincia = await _context.Provincia.FindAsync(id);
             return PartialView(provincia);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(Provincia model)
         {
-            var modelOld = await _context.Provincia.FindAsync(model.Id);//select * from Departamento where PK = id
+            var modelOld = await _context.Provincia.FindAsync(model.Id);
             modelOld.NombreProvincia = model.NombreProvincia;
-            _context.Update(modelOld);//update departamento set NombreDepartamento = model.NombreDepartamento
-            await _context.SaveChangesAsync(); //commit a la base de datos
+            _context.Update(modelOld);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index", new { id = model.IdDepartamento });
         }
         public async Task<IActionResult> Delete(int id)
