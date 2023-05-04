@@ -165,19 +165,28 @@
         </script>
 
     <script>
-        //Para eliminar la fila Ventana DELETE//
-        $("body").on("click", "a.delete-dialog-window", null, function (e) {
-            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="idZonas" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Trabajadores")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
-            $("#response").html(htmlContent);
-            $('#Anular').modal('show');
+        //PARA ABRIR UNA VENTANA EDIT
+        $("body").on("click", "a.edit-dialog-window", null, function (e) {
+            e.preventDefault();
+            debugger;
+            var $link = $(this);
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0) {
+                $('#EditModal').modal('show');
+            }
+            else {
+                $.get(url, function (data) {
+                    $('#EditModal .teeee').html(data);
+                    $('#EditModal').modal('show');
+                });
+            }
         });
-        //Cuadro para poder eliminar registro, con boton no y si //"modal"//
     </script>
 
     <script>
         //PARA ABRIR UNA VENTANA DELETE
         $("body").on("click", "a.delete-dialog-window", null, function (e) {
-            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Departamentos")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Trabajadores")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
             $("#response").html(htmlContent);
             $('#Anular').modal('show');
         });
@@ -185,7 +194,30 @@
     </script>
 
     <script>
+        //PARA HACER EL COMBO ANIDADO
+        function onchangeDepartamento() {
+            let idDepartamento = $("#comboDepartamento").val();
+            CargarProvincia(idDepartamento);
+        }
+        function CargarProvincia(idDepartamento) {
+            fetchGet("/Trabajadores/CargarProvincias/?id=" + idDepartamento, function (data) {
+                llenarCombo(data, "comboProvincia", "nombreProvincia", "id", "0");
+            });
+        }
+        function onchangeProvincia() {
+            let idProvincia = $("#comboProvincia").val();
+            CargarDistritos(idProvincia);
+        }
+        function CargarDistritos(idProvincia) {
+            fetchGet("/Trabajadores/CargarDistritos/?id=" + idProvincia, function (data) {
+                llenarCombo(data, "comboDistrito", "nombreDistrito", "id", "0");
+            });
+        }
+    </script>
+
+    <script>
         $(document).ready(function () {
+            //ESTE ES PARA EL DATATABLES
             $('#example').DataTable({
                 language: {
                     search: "Buscar: ",
@@ -208,26 +240,4 @@
             });
         });
     </script>
-    
-    <script>
-        //PARA HACER EL COMBO ANIDADO
-        function onchangeDepartamento() {
-            let idDepartamento = $("#comboDepartamento").val();
-            CargarProvincia(idDepartamento);
-        }
-        function CargarProvincia(idDepartamento) {
-            fetchGet("/Trabajadores/CargarProvincias/?id=" + idDepartamento, function (data) {
-                llenarCombo(data, "comboProvincia", "nombreProvincia", "id", "0");
-            });
-        }
-        function onchangeProvincia() {
-            let idProvincia = $("#comboProvincia").val();
-            CargarDistritos(idProvincia);
-        }
-        function CargarDistritos(idProvincia) {
-            fetchGet("/Trabajadores/CargarDistritos/?id=" + idProvincia, function (data) {
-                llenarCombo(data, "comboDistrito", "nombreDistrito", "id", "0");
-            });
-        }
-    </script>
-}
+    }

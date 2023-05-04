@@ -7,7 +7,7 @@
     <h3>Departamento: @parametroDepartamento.NombreDepartamento</h3>
     <h2>Provincias</h2>
     <p>
-        <a asp-action="Create" asp-route-idDepartamento="@parametroDepartamento.Id" class="btn btn-primary info-dialog-window">Nuevo Registro</a>
+        <a asp-action="Create" asp-route-idDepartamento="@parametroDepartamento.Id" class="btn btn-primary add-dialog-window">Nuevo Registro</a>
     </p>
     <div class="table-responsive table-sm table-hover">
 
@@ -28,7 +28,7 @@
                             @Html.DisplayFor(modelItem => item.NombreProvincia)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning infoObser-dialog-window">Editar</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning edit-dialog-window">Editar</a>
                             <a data-id="@item.Id" class="btn btn-danger delete-dialog-window">Eliminar</a>
                             <a asp-controller="Distritos" asp-action="Index" asp-route-id="@item.Id" class="btn btn-info">Distritos</a>
                         </td>
@@ -37,6 +37,38 @@
             </tbody>
         </table>
         <a asp-controller="Departamentos" class="btn btn-dark" asp-action="Index">Regresar a la lista</a>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="AddModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:green;color:white;">
+                <h5 class="modal-title" id="TittleCreatemodel">Crear Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teeee">Please wait...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="EditModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:orange;color:white;">
+                <h5 class="modal-title" id="TittleCreatemodel">Actualizar Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teeee">Please wait...</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -64,11 +96,49 @@
 @section Scripts {
 
     <script>
+        //PARA ABRIR UNA VENTANA CREATE
+        $("body").on("click", "a.add-dialog-window", null, function (e) {
+            e.preventDefault();
+            var $link = $(this);
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0) {
+                $('#AddModal').modal('show');
+            }
+            else {
+                $.get(url, function (data) {
+                    $('#AddModal .teeee').html(data);
+                    $('#AddModal').modal('show');
+                });
+            }
+        });
+        </script>
+
+    <script>
+        //PARA ABRIR UNA VENTANA EDIT
+        $("body").on("click", "a.edit-dialog-window", null, function (e) {
+            e.preventDefault();
+            debugger;
+            var $link = $(this);
+            var url = $(this).attr('href');
+            if (url.indexOf('#') == 0) {
+                $('#EditModal').modal('show');
+            }
+            else {
+                $.get(url, function (data) {
+                    $('#EditModal .teeee').html(data);
+                    $('#EditModal').modal('show');
+                });
+            }
+        });
+    </script>
+
+    <script>
+        //PARA ABRIR UNA VENTANA DELETE
         $("body").on("click", "a.delete-dialog-window", null, function (e) {
-            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="idDepartamento" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Provincias")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Provincias")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
             $("#response").html(htmlContent);
             $('#Anular').modal('show');
         });
-                        //Cuadro para poder eliminar registro, con boton no y si //"modal"//
+                //Cuadro para poder eliminar registro, con boton no y si
     </script>
-}
+    }

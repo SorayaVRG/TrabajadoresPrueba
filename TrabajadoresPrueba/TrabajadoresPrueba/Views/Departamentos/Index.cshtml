@@ -106,19 +106,9 @@
                     $('#AddModal').modal('show');
                 });
             }
-        });</script>
-
-    <script>
-        //PARA ABRIR UNA VENTANA DELETE
-        $("body").on("click", "a.delete-dialog-window", null, function (e) {
-            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Departamentos")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
-            $("#response").html(htmlContent);
-            $('#Anular').modal('show');
         });
-        //Cuadro para poder eliminar registro, con boton no y si
-    </script>
+        </script>
 
-    
     <script>
         //PARA ABRIR UNA VENTANA EDIT
         $("body").on("click", "a.edit-dialog-window", null, function (e) {
@@ -137,4 +127,14 @@
             }
         });
     </script>
-}
+
+    <script>
+        //PARA ABRIR UNA VENTANA DELETE
+        $("body").on("click", "a.delete-dialog-window", null, function (e) {
+            var htmlContent = '<br /><button type="button" id="btnNo" class="btn btn-danger" style="background-color:#da2213;color:white;" data-dismiss="modal" aria-hidden="true">No</button>&nbsp&nbsp<a href="@Url.Action("Delete", "Departamentos")/' + $(this).data('id') + '" class="btn btn-default">Si</a>';
+            $("#response").html(htmlContent);
+            $('#Anular').modal('show');
+        });
+        //Cuadro para poder eliminar registro, con boton no y si
+    </script>
+    }

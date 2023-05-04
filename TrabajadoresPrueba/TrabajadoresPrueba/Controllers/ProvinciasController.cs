@@ -28,7 +28,7 @@ namespace TrabajadoresPrueba.Controllers
         public IActionResult Create(int idDepartamento)
         {
             var provincia = new Provincia { IdDepartamento = idDepartamento };
-            return View(provincia);
+            return PartialView(provincia);
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace TrabajadoresPrueba.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var provincia = await _context.Provincia.FindAsync(id); //select * from Departamento where PK = id
-            return View(provincia);
+            return PartialView(provincia);
         }
 
         [HttpPost]
@@ -61,7 +61,7 @@ namespace TrabajadoresPrueba.Controllers
         {
             var idDepartamento = 0;
             var provincia = await _context.Provincia.FindAsync(id);
-            if (provincia != null) 
+            if (provincia != null)
             {
                 idDepartamento = provincia.IdDepartamento;
                 _context.Remove(provincia);

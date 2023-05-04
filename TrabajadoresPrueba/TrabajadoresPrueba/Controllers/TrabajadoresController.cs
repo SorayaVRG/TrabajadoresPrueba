@@ -108,7 +108,7 @@ namespace TrabajadoresPrueba.Controllers
             return string.Format("/images/{0}/{1}", ruta, fileName);
         }
 
-        //PARA CREAR FOTO
+        //PARA CARGAR FOTO
         private async Task<string> CargarDocumento0(IFormFile FotoIFormFile, string ruta)
         {
             var guid = Guid.NewGuid().ToString();
@@ -124,6 +124,7 @@ namespace TrabajadoresPrueba.Controllers
         }
 
         //Edit
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _context.Trabajadores.FindAsync(id);
@@ -146,7 +147,7 @@ namespace TrabajadoresPrueba.Controllers
              ViewBag de Tipos de documento
             */
 
-            return View(model);
+            return PartialView(model);
         }
 
         [HttpPost]

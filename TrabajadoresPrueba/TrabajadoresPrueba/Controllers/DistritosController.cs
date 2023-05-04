@@ -27,7 +27,7 @@ namespace TrabajadoresPrueba.Controllers
         public IActionResult Create(int idProvincia)
         {
             var distrito = new Distrito { IdProvincia = idProvincia };
-            return View(distrito);
+            return PartialView(distrito);
         }
 
         [HttpPost]
@@ -44,7 +44,7 @@ namespace TrabajadoresPrueba.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var distrito = await _context.Distrito.FindAsync(id); //select * from Distrito where PK = id
-            return View(distrito);
+            return PartialView(distrito);
         }
 
         [HttpPost]
